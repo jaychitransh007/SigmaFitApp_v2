@@ -1,20 +1,44 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider as PaperProvider, MD3Theme } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import theme from './src/theme';
+import AppNavigator from './src/navigation/AppNavigator';
+import useCachedResources from './src/hooks/useCachedResources';
+import { AuthProvider } from './src/context/AuthContext';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+declare global {
+  namespace ReactNativePaper {
+    interface Theme extends MD3Theme {
+      custom: {
+        colors: typeof theme.custom.colors;
+        typography: typeof theme.custom.typography;
+        spacing: typeof theme.custom.spacing;
+        borderRadius: typeof theme.custom.borderRadius;
+        elevation: typeof theme.custom.elevation;
+      };
+    }
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  const isLoadingComplete = useCachedResources();
+
+  if (!isLoadingComplete) {
+    return null;
+  }
+
+  return (
+    <SafeAreaProvider>
+      <PaperProvider theme={theme}>
+        <AuthProvider>
+          <NavigationContainer>
+            <StatusBar style="dark" backgroundColor={theme.colors.background as string} />
+            <AppNavigator />
+          </NavigationContainer>
+        </AuthProvider>
+      </PaperProvider>
+    </SafeAreaProvider>
+  );
+}
