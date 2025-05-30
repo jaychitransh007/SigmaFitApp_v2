@@ -2,9 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../hooks/useAppTheme';
-import HomeScreen from '../screens/Home/HomeScreen';
-import ProgressScreen from '../screens/Progress/ProgressScreen';
-import SettingsScreen from '../screens/Settings/SettingsScreen';
+import { HomeScreen, ProgressScreen, SettingsScreen } from '../screens';
 
 export type MainTabParamList = {
   Home: undefined;

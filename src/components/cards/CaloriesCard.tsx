@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../../hooks/useAppTheme';
-import CircularProgress from '../CircularProgress';
+import CircularProgress from '../../components/CircularProgress';
 
 interface CaloriesCardProps {
   caloriesLeft: number;

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { Text, TextInput, Button, Divider } from 'react-native-paper';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
+import { Text, TextInput, Button, Divider, ActivityIndicator } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 import { useAppTheme } from '../../hooks/useAppTheme';
+import { useAuth } from '../../context/AuthContext';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -15,6 +16,8 @@ export default function LoginScreen() {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneError, setPhoneError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { requestOTP } = useAuth();
 
   const validatePhoneNumber = () => {
     // Basic phone validation
@@ -27,10 +30,59 @@ export default function LoginScreen() {
     return true;
   };
 
-  const handlePhoneLogin = () => {
-    if (validatePhoneNumber()) {
-      // TODO: Send OTP API call
-      navigation.navigate('OTPVerification', { phoneNumber });
+  const handlePhoneLogin = async () => {
+    if (!validatePhoneNumber()) return;
+    
+    try {
+      console.log('Initiating OTP request for:', phoneNumber);
+      setIsLoading(true);
+      
+      // Format phone number to ensure it's in the correct format
+      const formattedNumber = phoneNumber.startsWith('+') 
+        ? phoneNumber 
+        : `+91${phoneNumber.replace(/\D/g, '').slice(-10)}`;
+      
+      console.log('Formatted phone number for OTP request:', formattedNumber);
+      
+      // Request OTP and wait for response
+      const { userId, otp } = await requestOTP(formattedNumber);
+      
+      if (!userId) {
+        throw new Error('No user ID received from server');
+      }
+      
+      console.log('OTP request successful, navigating to OTP screen with:', { 
+        phoneNumber: formattedNumber,
+        userId 
+      });
+      
+      // Navigate to OTP screen with both phone number and userId
+      navigation.navigate('OTPVerification', { 
+        phoneNumber: formattedNumber,
+        userId
+      });
+      
+      // In development, log the OTP for testing
+      if (otp) {
+        console.log('[DEV] OTP for testing:', otp);
+      }
+      
+    } catch (error) {
+      console.error('Error in handlePhoneLogin:', error);
+      
+      // Show error to user
+      Alert.alert(
+        'Error', 
+        error instanceof Error ? error.message : 'Failed to send OTP. Please try again.',
+        [
+          {
+            text: 'OK',
+            style: 'cancel',
+          },
+        ]
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -113,10 +165,13 @@ export default function LoginScreen() {
             <Button
               mode="contained"
               onPress={handlePhoneLogin}
-              style={styles.loginButton}
+              style={[styles.button, { marginBottom: 16 }]}
               contentStyle={styles.buttonContent}
+              labelStyle={styles.buttonLabel}
+              icon={isLoading ? () => <ActivityIndicator color="white" /> : "phone"}
+              disabled={isLoading}
             >
-              Send OTP
+              {isLoading ? 'Sending OTP...' : 'Continue with Phone'}
             </Button>
 
             <View style={styles.dividerContainer}>
@@ -148,6 +203,18 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
+  },
+  button: {
+    marginTop: 16,
+    paddingVertical: 8,
+  },
+  buttonContent: {
+    height: 48,
+    paddingVertical: 8,
+  },
+  buttonLabel: {
+    fontSize: 16,
   },
   keyboardView: {
     flex: 1,
@@ -183,9 +250,6 @@ const styles = StyleSheet.create({
   loginButton: {
     marginTop: 16,
     marginBottom: 24,
-  },
-  buttonContent: {
-    paddingVertical: 8,
   },
   dividerContainer: {
     flexDirection: 'row',

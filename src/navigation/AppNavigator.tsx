@@ -13,7 +13,10 @@ import MainNavigator from './MainNavigator';
 // Navigation types
 export type RootStackParamList = {
   Login: undefined;
-  OTPVerification: { phoneNumber: string };
+  OTPVerification: { 
+    phoneNumber: string;
+    userId: string;
+  };
   ProfileSetup: undefined;
   GoalSetting: undefined;
   Main: undefined;
@@ -31,7 +34,10 @@ export default function AppNavigator() {
   }
 
   const getInitialRouteName = (): keyof RootStackParamList => {
-    if (!user) return 'Login';
+    // Check if we're in the middle of OTP verification
+    const isVerifyingOTP = user?.id?.includes('temp-') || false;
+    
+    if (!user || isVerifyingOTP) return 'Login';
     if (!user.hasProfile) return 'ProfileSetup';
     if (!user.hasGoals) return 'GoalSetting';
     return 'Main';
@@ -53,48 +59,66 @@ export default function AppNavigator() {
         },
       }}
     >
-      {!user ? (
+      {/* Always include auth screens */}
+      <Stack.Screen 
+        name="Login" 
+        component={LoginScreen} 
+        options={{ 
+          headerShown: false,
+          gestureEnabled: false
+        }}
+      />
+      <Stack.Screen 
+        name="OTPVerification" 
+        component={OTPVerificationScreen}
+        options={{ 
+          title: 'Verify OTP',
+          headerBackTitle: 'Back',
+          gestureEnabled: true
+        }}
+      />
+      
+      {/* Protected screens - only show when user is authenticated */}
+      {user && !user.id?.includes('temp-') && (
         <>
-          <Stack.Screen 
-            name="Login" 
-            component={LoginScreen} 
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen 
-            name="OTPVerification" 
-            component={OTPVerificationScreen}
-            options={{ 
-              title: 'Verify OTP',
-              headerBackTitle: 'Back'
-            }}
-          />
+          {/* Show profile setup if user hasn't completed it */}
+          {!user.hasProfile && (
+            <Stack.Screen 
+              name="ProfileSetup" 
+              component={ProfileSetupScreen}
+              options={{ 
+                title: 'Create Profile',
+                headerLeft: () => null,
+                gestureEnabled: false,
+              }}
+            />
+          )}
+          
+          {/* Show goal setting if profile is complete but goals aren't set */}
+          {user.hasProfile && !user.hasGoals && (
+            <Stack.Screen 
+              name="GoalSetting" 
+              component={GoalSettingScreen}
+              options={{ 
+                title: 'Set Your Goals',
+                headerLeft: () => null,
+                gestureEnabled: false,
+              }}
+            />
+          )}
+          
+          {/* Show main app if all setup is complete */}
+          {user.hasProfile && user.hasGoals && (
+            <Stack.Screen 
+              name="Main" 
+              component={MainNavigator}
+              options={{ 
+                headerShown: false,
+                gestureEnabled: false
+              }}
+            />
+          )}
         </>
-      ) : !user.hasProfile ? (
-        <Stack.Screen 
-          name="ProfileSetup" 
-          component={ProfileSetupScreen}
-          options={{ 
-            title: 'Create Profile',
-            headerLeft: () => null,
-            gestureEnabled: false,
-          }}
-        />
-      ) : !user.hasGoals ? (
-        <Stack.Screen 
-          name="GoalSetting" 
-          component={GoalSettingScreen}
-          options={{ 
-            title: 'Set Your Goals',
-            headerLeft: () => null,
-            gestureEnabled: false,
-          }}
-        />
-      ) : (
-        <Stack.Screen 
-          name="Main" 
-          component={MainNavigator}
-          options={{ headerShown: false }}
-        />
       )}
     </Stack.Navigator>
   );

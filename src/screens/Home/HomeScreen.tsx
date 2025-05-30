@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
 import { Text, FAB, Card } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -25,7 +27,79 @@ export default function HomeScreen() {
     fatGoal: 70,
   };
 
-  const recentlyLogged = []; // Empty for now
+  // Define the FoodItemData interface for recently logged food items
+  interface FoodItemData {
+    id: string;
+    name: string;
+    calories: number;
+    time: string;
+    mealType: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+  }
+  
+  // For now, we'll just use FoodItemData[] since that's what RecentlyLoggedSection expects
+  // If you need to track workouts separately, you can create a separate state for them
+  const [recentlyLogged, setRecentlyLogged] = useState<FoodItemData[]>([]);
+
+  const requestCameraPermission = async () => {
+    try {
+      if (Platform.OS === 'web') {
+        const { status } = await MediaLibrary.requestPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Sorry, we need camera roll permissions to make this work!');
+          return false;
+        }
+      } else {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Sorry, we need camera permissions to make this work!');
+          return false;
+        }
+      }
+      return true;
+    } catch (error) {
+      console.error('Error requesting permissions:', error);
+      Alert.alert('Error', 'Failed to request permissions. Please check your settings.');
+      return false;
+    }
+  };
+
+  const handleAddFood = async () => {
+    const hasPermission = await requestCameraPermission();
+    if (!hasPermission) return;
+
+    try {
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        // Here you would typically process the image
+        // For now, we'll just log the result
+        console.log('Image captured:', result.assets[0].uri);
+        
+        // TODO: Add your image processing logic here
+        // For example, you might want to upload the image to a server
+        // or process it locally to extract food information
+        
+        // Mock adding a new food item
+        const newFoodItem: FoodItemData = {
+          id: Date.now().toString(),
+          name: 'Captured Food',
+          calories: 0, // You would calculate this based on the image analysis
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          mealType: 'lunch', // You might want to let the user select this
+        };
+        
+        setRecentlyLogged(prev => [newFoodItem, ...prev]);
+      }
+    } catch (error) {
+      console.error('Error taking picture:', error);
+      Alert.alert('Error', 'Failed to take picture. Please try again.');
+    }
+  };
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -122,7 +196,7 @@ export default function HomeScreen() {
           { backgroundColor: theme.custom.colors.text.primary }
         ]}
         color={theme.colors.background}
-        onPress={() => console.log('Add food')}
+        onPress={handleAddFood}
       />
     </SafeAreaView>
   );
