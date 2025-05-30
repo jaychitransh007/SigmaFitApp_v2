@@ -54,48 +54,50 @@ export default function DietaryPreferenceStep({ value, onNext, onBack }: Dietary
         </View>
 
         <View style={onboardingStyles.inputContainer}>
-          {preferences.map((pref) => (
-            <TouchableOpacity
-              key={pref.id}
-              style={[
-                styles.optionCard,
-                {
-                  backgroundColor: theme.colors.surface,
-                  borderColor: selectedPreference === pref.id ? theme.colors.primary : theme.custom.colors.border,
-                  borderWidth: selectedPreference === pref.id ? 2 : 1,
-                }
-              ]}
-              onPress={() => setSelectedPreference(pref.id)}
-            >
-              <MaterialCommunityIcons
-                name={pref.icon}
-                size={32}
-                color={selectedPreference === pref.id ? theme.colors.primary : theme.custom.colors.text.secondary}
-                style={styles.optionIcon}
-              />
-              <View style={styles.optionTextContainer}>
-                <Text style={[
-                  styles.optionLabel,
+          <View style={onboardingStyles.inputWrapper}>
+            {preferences.map((pref) => (
+              <TouchableOpacity
+                key={pref.id}
+                style={[
+                  styles.optionCard,
                   {
-                    color: selectedPreference === pref.id ? theme.colors.primary : theme.custom.colors.text.primary,
-                    fontWeight: selectedPreference === pref.id ? theme.custom.typography.weights.bold : theme.custom.typography.weights.regular,
-                    fontSize: theme.custom.typography.sizes.bodyLarge,
+                    backgroundColor: theme.colors.surface,
+                    borderColor: selectedPreference === pref.id ? theme.colors.primary : theme.custom.colors.border,
+                    borderWidth: selectedPreference === pref.id ? 2 : 1,
                   }
-                ]}>
-                  {pref.label}
-                </Text>
-                <Text style={[
-                  styles.optionDescription,
-                  {
-                    color: theme.custom.colors.text.secondary,
-                    fontSize: theme.custom.typography.sizes.bodySmall,
-                  }
-                ]}>
-                  {pref.description}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+                ]}
+                onPress={() => setSelectedPreference(pref.id)}
+              >
+                <MaterialCommunityIcons
+                  name={pref.icon}
+                  size={32}
+                  color={selectedPreference === pref.id ? theme.colors.primary : theme.custom.colors.text.secondary}
+                  style={styles.optionIcon}
+                />
+                <View style={styles.optionTextContainer}>
+                  <Text style={[
+                    styles.optionLabel,
+                    {
+                      color: selectedPreference === pref.id ? theme.colors.primary : theme.custom.colors.text.primary,
+                      fontWeight: selectedPreference === pref.id ? theme.custom.typography.weights.bold : theme.custom.typography.weights.regular,
+                      fontSize: theme.custom.typography.sizes.bodyLarge,
+                    }
+                  ]}>
+                    {pref.label}
+                  </Text>
+                  <Text style={[
+                    styles.optionDescription,
+                    {
+                      color: theme.custom.colors.text.secondary,
+                      fontSize: theme.custom.typography.sizes.bodySmall,
+                    }
+                  ]}>
+                    {pref.description}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
       </View>
 

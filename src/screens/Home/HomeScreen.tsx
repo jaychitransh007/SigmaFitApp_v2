@@ -1,90 +1,117 @@
-// src/screens/Home/HomeScreen.tsx
-import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, FAB } from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, FAB, Card } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../../hooks/useAppTheme';
+import CaloriesCard from '../../components/cards/CaloriesCard';
+import MacroCard from '../../components/cards/MacroCard';
+import WeekCalendar from '../../components/WeekCalendar';
+import RecentlyLoggedSection from '../../components/RecentlyLoggedSection';
 
 export default function HomeScreen() {
   const theme = useAppTheme();
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  // Mock data - replace with actual data from your state management
+  const nutritionData = {
+    caloriesLeft: 2250,
+    caloriesGoal: 2500,
+    proteinLeft: 178,
+    proteinGoal: 180,
+    carbsLeft: 243,
+    carbsGoal: 250,
+    fatLeft: 62,
+    fatGoal: 70,
+  };
+
+  const recentlyLogged = []; // Empty for now
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={[
-            styles.greeting,
-            { 
-              color: theme.custom.colors.text.primary,
-              fontSize: theme.custom.typography.sizes.headerLarge,
-              fontWeight: theme.custom.typography.weights.bold
-            }
-          ]}>
-            Hello, Sigma
-          </Text>
-          
-          <View style={styles.streakContainer}>
+          <View style={styles.headerLeft}>
             <MaterialCommunityIcons 
-              name="fire" 
-              size={24} 
-              color={theme.custom.colors.accent.orange} 
+              name="nutrition" 
+              size={32} 
+              color={theme.colors.primary} 
             />
             <Text style={[
-              styles.streakText,
+              styles.appName,
               { 
-                color: theme.custom.colors.accent.orange,
+                color: theme.custom.colors.text.primary,
                 fontSize: theme.custom.typography.sizes.headerMedium,
-                fontWeight: theme.custom.typography.weights.semiBold
+                fontWeight: theme.custom.typography.weights.bold
               }
             ]}>
-              3 days
+              Sigma Fit
             </Text>
+          </View>
+          
+          <View style={styles.headerRight}>
+            <View style={styles.streakContainer}>
+              <MaterialCommunityIcons 
+                name="fire" 
+                size={20} 
+                color={theme.custom.colors.accent.orange} 
+              />
+              <Text style={[
+                styles.streakText,
+                { 
+                  color: theme.custom.colors.text.primary,
+                  fontSize: theme.custom.typography.sizes.bodyMedium,
+                  fontWeight: theme.custom.typography.weights.medium
+                }
+              ]}>
+                3
+              </Text>
+            </View>
           </View>
         </View>
 
-        {/* Today's Nutrition Section */}
-        <View style={styles.section}>
-          <Text style={[
-            styles.sectionTitle,
-            { 
-              color: theme.custom.colors.text.primary,
-              fontSize: theme.custom.typography.sizes.bodyLarge,
-              fontWeight: theme.custom.typography.weights.medium
-            }
-          ]}>
-            Today's Nutrition
-          </Text>
+        {/* Week Calendar */}
+        <WeekCalendar 
+          selectedDate={selectedDate}
+          onDateSelect={setSelectedDate}
+        />
+
+        {/* Calories Card */}
+        <View style={styles.caloriesSection}>
+          <CaloriesCard 
+            caloriesLeft={nutritionData.caloriesLeft}
+            caloriesGoal={nutritionData.caloriesGoal}
+          />
         </View>
 
-        {/* Empty State */}
-        <View style={[styles.emptyState, { backgroundColor: theme.colors.surface }]}>
-          <MaterialCommunityIcons 
-            name="food-apple-outline" 
-            size={48} 
-            color={theme.custom.colors.text.secondary} 
+        {/* Macros Cards */}
+        <View style={styles.macrosContainer}>
+          <MacroCard
+            type="protein"
+            value={nutritionData.proteinLeft}
+            goal={nutritionData.proteinGoal}
+            unit="g"
           />
-          <Text style={[
-            styles.emptyStateTitle,
-            { 
-              color: theme.custom.colors.text.primary,
-              fontSize: theme.custom.typography.sizes.bodyMedium,
-              fontWeight: theme.custom.typography.weights.medium
-            }
-          ]}>
-            You haven't uploaded any food
-          </Text>
-          <Text style={[
-            styles.emptyStateSubtext,
-            { 
-              color: theme.custom.colors.text.secondary,
-              fontSize: theme.custom.typography.sizes.bodyMedium
-            }
-          ]}>
-            Start tracking today's meals to see your nutrition breakdown
-          </Text>
+          <MacroCard
+            type="carbs"
+            value={nutritionData.carbsLeft}
+            goal={nutritionData.carbsGoal}
+            unit="g"
+          />
+          <MacroCard
+            type="fat"
+            value={nutritionData.fatLeft}
+            goal={nutritionData.fatGoal}
+            unit="g"
+          />
         </View>
+
+        {/* Recently Logged Section */}
+        <RecentlyLoggedSection items={recentlyLogged} />
+
+        {/* Bottom padding for FAB */}
+        <View style={{ height: 80 }} />
       </ScrollView>
 
       {/* Floating Action Button */}
@@ -92,8 +119,9 @@ export default function HomeScreen() {
         icon="plus"
         style={[
           styles.fab,
-          { backgroundColor: theme.colors.primary }
+          { backgroundColor: theme.custom.colors.text.primary }
         ]}
+        color={theme.colors.background}
         onPress={() => console.log('Add food')}
       />
     </SafeAreaView>
@@ -108,47 +136,48 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingTop: 16,
-    paddingBottom: 8,
+    paddingBottom: 20,
   },
-  greeting: {
-    // Font styles applied inline with theme
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  appName: {
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
   },
   streakContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
+    backgroundColor: 'rgba(255, 167, 38, 0.1)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
   },
   streakText: {
-    // Font styles applied inline with theme
   },
-  section: {
-    paddingHorizontal: 16,
-    paddingTop: 24,
-    paddingBottom: 16,
+  caloriesSection: {
+    paddingHorizontal: 20,
+    marginBottom: 16,
   },
-  sectionTitle: {
-    // Font styles applied inline with theme
-  },
-  emptyState: {
-    marginHorizontal: 16,
-    padding: 24,
-    borderRadius: 12,
-    alignItems: 'center',
-    gap: 12,
-  },
-  emptyStateTitle: {
-    textAlign: 'center',
-  },
-  emptyStateSubtext: {
-    textAlign: 'center',
-    paddingHorizontal: 16,
+  macrosContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    gap: 10,
+    marginBottom: 32,
   },
   fab: {
     position: 'absolute',
     margin: 16,
     right: 0,
     bottom: 0,
+    borderRadius: 28,
   },
 });

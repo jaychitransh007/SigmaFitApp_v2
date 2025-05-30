@@ -24,11 +24,6 @@ export default function NameStep({ value, onNext }: NameStepProps) {
       width: '100%',
       fontSize: theme.custom.typography.sizes.bodyLarge,
       backgroundColor: theme.colors.surface,
-      borderRadius: 8,
-    },
-    inputContainer: {
-      width: '100%',
-      marginBottom: 24,
     },
   });
 
@@ -61,38 +56,40 @@ export default function NameStep({ value, onNext }: NameStepProps) {
           </Text>
         </View>
 
-        <View style={[onboardingStyles.inputContainer, styles.inputContainer]}>
-          <TextInput
-            value={name}
-            onChangeText={setName}
-            mode="outlined"
-            label="Your name"
-            placeholder="Enter your name"
-            style={styles.input}
-            outlineStyle={{
-              borderRadius: 12,
-              borderWidth: 1,
-              borderColor: theme.colors.outline,
-            }}
-            contentStyle={{
-              paddingVertical: 12,
-              paddingHorizontal: 16,
-            }}
-            textColor={theme.custom.colors.text.primary}
-            activeOutlineColor={theme.colors.primary}
-            autoFocus
-            autoCapitalize="words"
-            autoCorrect={false}
-            returnKeyType="next"
-            onSubmitEditing={handleNext}
-            theme={{
-              colors: {
-                onSurfaceVariant: theme.colors.onSurfaceVariant,
-                primary: theme.colors.primary,
-              },
-              roundness: 12,
-            }}
-          />
+        <View style={onboardingStyles.inputContainer}>
+          <View style={onboardingStyles.inputWrapper}>
+            <TextInput
+              value={name}
+              onChangeText={setName}
+              mode="outlined"
+              label="Your name"
+              placeholder="Enter your name"
+              style={styles.input}
+              outlineStyle={{
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: theme.colors.outline,
+              }}
+              contentStyle={{
+                paddingVertical: 12,
+                paddingHorizontal: 16,
+              }}
+              textColor={theme.custom.colors.text.primary}
+              activeOutlineColor={theme.colors.primary}
+              autoFocus
+              autoCapitalize="words"
+              autoCorrect={false}
+              returnKeyType="next"
+              onSubmitEditing={handleNext}
+              theme={{
+                colors: {
+                  onSurfaceVariant: theme.colors.onSurfaceVariant,
+                  primary: theme.colors.primary,
+                },
+                roundness: 12,
+              }}
+            />
+          </View>
         </View>
       </View>
 
@@ -101,7 +98,7 @@ export default function NameStep({ value, onNext }: NameStepProps) {
           mode="contained"
           onPress={handleNext}
           disabled={!name.trim()}
-          style={[onboardingStyles.button, onboardingStyles.nextButton]}
+          style={[onboardingStyles.button, onboardingStyles.nextButton, { flex: 1 }]} 
           contentStyle={onboardingStyles.buttonContent}
           icon="arrow-right"
         >

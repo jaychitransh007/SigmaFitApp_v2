@@ -39,7 +39,7 @@ export default function PaceSelectionStep({ value, goal, onNext, onBack }: PaceS
 
   return (
     <View style={onboardingStyles.container}>
-      <ScrollView contentContainerStyle={onboardingStyles.content} showsVerticalScrollIndicator={false}>
+      <View style={onboardingStyles.content}>
         <View style={onboardingStyles.header}>
           <Text style={[
             onboardingStyles.title,
@@ -63,107 +63,112 @@ export default function PaceSelectionStep({ value, goal, onNext, onBack }: PaceS
         </View>
 
         <View style={onboardingStyles.inputContainer}>
-          <Text style={[
-            styles.paceLabel,
-            {
-              color: theme.custom.colors.text.primary,
-              fontSize: theme.custom.typography.sizes.headerLarge,
-              fontWeight: theme.custom.typography.weights.bold,
-            }
-          ]}>
-            {getWeeklyChange()}
-          </Text>
-          
-          <Slider
-            style={styles.slider}
-            minimumValue={0.1}
-            maximumValue={goal === 'gain' ? 1.5 : 2}
-            step={0.1}
-            value={selectedPace}
-            onValueChange={setSelectedPace}
-            minimumTrackTintColor={theme.colors.primary}
-            maximumTrackTintColor={theme.custom.colors.border}
-            thumbTintColor={theme.colors.primary}
-          />
-          
-          <View style={styles.sliderLabelsContainer}>
+          <ScrollView 
+            contentContainerStyle={onboardingStyles.inputWrapper}
+            showsVerticalScrollIndicator={false}
+          >
             <Text style={[
-              styles.sliderLabelText,
-              { 
-                color: theme.custom.colors.text.secondary,
-                fontSize: theme.custom.typography.sizes.bodySmall,
+              styles.paceLabel,
+              {
+                color: theme.custom.colors.text.primary,
+                fontSize: theme.custom.typography.sizes.headerLarge,
+                fontWeight: theme.custom.typography.weights.bold,
               }
             ]}>
-              0.1 kg
+              {getWeeklyChange()}
             </Text>
-            <Text style={[
-              styles.sliderLabelText,
-              { 
-                color: theme.custom.colors.text.secondary,
-                fontSize: theme.custom.typography.sizes.bodySmall,
-              }
-            ]}>
-              {goal === 'gain' ? '1.5' : '2.0'} kg
-            </Text>
-          </View>
+            
+            <Slider
+              style={styles.slider}
+              minimumValue={0.1}
+              maximumValue={goal === 'gain' ? 1.5 : 2}
+              step={0.1}
+              value={selectedPace}
+              onValueChange={setSelectedPace}
+              minimumTrackTintColor={theme.colors.primary}
+              maximumTrackTintColor={theme.custom.colors.border}
+              thumbTintColor={theme.colors.primary}
+            />
+            
+            <View style={styles.sliderLabelsContainer}>
+              <Text style={[
+                styles.sliderLabelText,
+                { 
+                  color: theme.custom.colors.text.secondary,
+                  fontSize: theme.custom.typography.sizes.bodySmall,
+                }
+              ]}>
+                0.1 kg
+              </Text>
+              <Text style={[
+                styles.sliderLabelText,
+                { 
+                  color: theme.custom.colors.text.secondary,
+                  fontSize: theme.custom.typography.sizes.bodySmall,
+                }
+              ]}>
+                {goal === 'gain' ? '1.5' : '2.0'} kg
+              </Text>
+            </View>
+
+            {status === 'recommended' && (
+              <Card style={[
+                styles.infoCard, 
+                { 
+                  backgroundColor: theme.custom.colors.accent.green + '20',
+                  borderColor: theme.custom.colors.accent.green
+                }
+              ]}>
+                <Card.Content style={styles.infoCardContent}>
+                  <MaterialCommunityIcons
+                    name="check-circle-outline"
+                    size={24}
+                    color={theme.custom.colors.accent.green}
+                  />
+                  <Text style={[
+                    styles.infoCardText,
+                    { 
+                      color: theme.custom.colors.text.primary,
+                      fontSize: theme.custom.typography.sizes.bodyMedium,
+                    }
+                  ]}>
+                    Recommended pace for sustainable results.
+                  </Text>
+                </Card.Content>
+              </Card>
+            )}
+
+            {status === 'warning' && (
+              <Card style={[
+                styles.infoCard, 
+                { 
+                  backgroundColor: theme.custom.colors.accent.red + '20',
+                  borderColor: theme.custom.colors.accent.red
+                }
+              ]}>
+                <Card.Content style={styles.infoCardContent}>
+                  <MaterialCommunityIcons
+                    name="alert-circle-outline"
+                    size={24}
+                    color={theme.custom.colors.accent.red}
+                  />
+                  <Text style={[
+                    styles.infoCardText,
+                    { 
+                      color: theme.custom.colors.text.primary,
+                      fontSize: theme.custom.typography.sizes.bodyMedium,
+                    }
+                  ]}>
+                    {goal === 'gain' 
+                      ? 'Gaining too quickly can lead to excess fat.' 
+                      : 'You may lose muscle mass at this pace.'}
+                  </Text>
+                </Card.Content>
+              </Card>
+            )}
+          </ScrollView>
         </View>
-
-        {status === 'recommended' && (
-          <Card style={[
-            styles.infoCard, 
-            { 
-              backgroundColor: theme.custom.colors.accent.green + '20',
-              borderColor: theme.custom.colors.accent.green
-            }
-          ]}>
-            <Card.Content style={styles.infoCardContent}>
-              <MaterialCommunityIcons
-                name="check-circle-outline"
-                size={24}
-                color={theme.custom.colors.accent.green}
-              />
-              <Text style={[
-                styles.infoCardText,
-                { 
-                  color: theme.custom.colors.text.primary,
-                  fontSize: theme.custom.typography.sizes.bodyMedium,
-                }
-              ]}>
-                Recommended pace for sustainable results.
-              </Text>
-            </Card.Content>
-          </Card>
-        )}
-
-        {status === 'warning' && (
-          <Card style={[
-            styles.infoCard, 
-            { 
-              backgroundColor: theme.custom.colors.accent.red + '20',
-              borderColor: theme.custom.colors.accent.red
-            }
-          ]}>
-            <Card.Content style={styles.infoCardContent}>
-              <MaterialCommunityIcons
-                name="alert-circle-outline"
-                size={24}
-                color={theme.custom.colors.accent.red}
-              />
-              <Text style={[
-                styles.infoCardText,
-                { 
-                  color: theme.custom.colors.text.primary,
-                  fontSize: theme.custom.typography.sizes.bodyMedium,
-                }
-              ]}>
-                {goal === 'gain' 
-                  ? 'Gaining too quickly can lead to excess fat.' 
-                  : 'You may lose muscle mass at this pace.'}
-              </Text>
-            </Card.Content>
-          </Card>
-        )}
-      </ScrollView>
+      </View>
 
       <View style={onboardingStyles.footer}>
         <Button
@@ -204,7 +209,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   sliderLabelText: {
-    // fontSize is now applied inline using theme
   },
   infoCard: {
     marginTop: 24,
@@ -220,7 +224,6 @@ const styles = StyleSheet.create({
   },
   infoCardText: {
     flex: 1,
-    // fontSize is now applied inline using theme
     lineHeight: 20,
   },
 });

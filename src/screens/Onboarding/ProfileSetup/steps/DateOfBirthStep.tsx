@@ -96,92 +96,94 @@ export default function DateOfBirthStep({ value, onNext, onBack }: DateOfBirthSt
         </View>
 
         <View style={onboardingStyles.inputContainer}>
-          <View style={onboardingStyles.rowContainer}>
-            <View style={onboardingStyles.pickerWrapper}>
-              <Text style={[
-                onboardingStyles.pickerLabel, 
-                { 
-                  color: theme.custom.colors.text.secondary, 
-                  fontSize: theme.custom.typography.sizes.bodyLarge,
-                  fontWeight: theme.custom.typography.weights.regular,
-                }
-              ]}>
-                Day
-              </Text>
-              <WheelPicker
-                items={daysArray}
-                selectedIndex={day - 1}
-                onSelect={(index) => setDay(daysArray[index])}
-                width={80}
-                itemHeight={40}
-                pickerText={{
-                  fontSize: 16,
-                  color: theme.custom.colors.text.secondary,
-                }}
-                pickerSelectedText={{
-                  fontSize: 20,
-                  color: theme.colors.primary,
-                  fontWeight: '700',
-                }}
-              />
-            </View>
+          <View style={onboardingStyles.inputWrapper}>
+            <View style={onboardingStyles.rowContainer}>
+              <View style={onboardingStyles.pickerWrapper}>
+                <Text style={[
+                  onboardingStyles.pickerLabel, 
+                  { 
+                    color: theme.custom.colors.text.secondary, 
+                    fontSize: theme.custom.typography.sizes.bodyMedium,
+                    fontWeight: theme.custom.typography.weights.regular,
+                  }
+                ]}>
+                  Day
+                </Text>
+                <WheelPicker
+                  items={daysArray}
+                  selectedIndex={day - 1}
+                  onSelect={(index) => setDay(daysArray[index])}
+                  width={80}
+                  itemHeight={40}
+                  pickerText={{
+                    fontSize: 16,
+                    color: theme.custom.colors.text.secondary,
+                  }}
+                  pickerSelectedText={{
+                    fontSize: 20,
+                    color: theme.colors.primary,
+                    fontWeight: '700',
+                  }}
+                />
+              </View>
 
-            <View style={onboardingStyles.pickerWrapper}>
-              <Text style={[
-                onboardingStyles.pickerLabel, 
-                { 
-                  color: theme.custom.colors.text.secondary, 
-                  fontSize: theme.custom.typography.sizes.bodyLarge,
-                  fontWeight: theme.custom.typography.weights.regular,
-                }
-              ]}>
-                Month
-              </Text>
-              <WheelPicker
-                items={months}
-                selectedIndex={month}
-                onSelect={setMonth}
-                width={120}
-                itemHeight={40}
-                pickerText={{
-                  fontSize: 16,
-                  color: theme.custom.colors.text.secondary,
-                }}
-                pickerSelectedText={{
-                  fontSize: 20,
-                  color: theme.colors.primary,
-                  fontWeight: '700',
-                }}
-              />
-            </View>
+              <View style={onboardingStyles.pickerWrapper}>
+                <Text style={[
+                  onboardingStyles.pickerLabel, 
+                  { 
+                    color: theme.custom.colors.text.secondary, 
+                    fontSize: theme.custom.typography.sizes.bodyMedium,
+                    fontWeight: theme.custom.typography.weights.regular,
+                  }
+                ]}>
+                  Month
+                </Text>
+                <WheelPicker
+                  items={months}
+                  selectedIndex={month}
+                  onSelect={setMonth}
+                  width={120}
+                  itemHeight={40}
+                  pickerText={{
+                    fontSize: 16,
+                    color: theme.custom.colors.text.secondary,
+                  }}
+                  pickerSelectedText={{
+                    fontSize: 20,
+                    color: theme.colors.primary,
+                    fontWeight: '700',
+                  }}
+                />
+              </View>
 
-            <View style={onboardingStyles.pickerWrapper}>
-              <Text style={[
-                onboardingStyles.pickerLabel, 
-                { 
-                  color: theme.custom.colors.text.secondary, 
-                  fontSize: theme.custom.typography.sizes.bodyLarge,
-                  fontWeight: theme.custom.typography.weights.regular,
-                }
-              ]}>
-                Year
-              </Text>
-              <WheelPicker
-                items={yearsArray}
-                selectedIndex={yearsArray.indexOf(year)}
-                onSelect={(index) => setYear(yearsArray[index])}
-                width={100}
-                itemHeight={40}
-                pickerText={{
-                  fontSize: 16,
-                  color: theme.custom.colors.text.secondary,
-                }}
-                pickerSelectedText={{
-                  fontSize: 20,
-                  color: theme.colors.primary,
-                  fontWeight: '700',
-                }}
-              />
+              <View style={onboardingStyles.pickerWrapper}>
+                <Text style={[
+                  onboardingStyles.pickerLabel, 
+                  { 
+                    color: theme.custom.colors.text.secondary, 
+                    fontSize: theme.custom.typography.sizes.bodyMedium,
+                    fontWeight: theme.custom.typography.weights.regular,
+                  }
+                ]}>
+                  Year
+                </Text>
+                <WheelPicker
+                  items={yearsArray}
+                  selectedIndex={yearsArray.indexOf(year)}
+                  onSelect={(index) => setYear(yearsArray[index])}
+                  width={100}
+                  itemHeight={40}
+                  pickerText={{
+                    fontSize: 16,
+                    color: theme.custom.colors.text.secondary,
+                  }}
+                  pickerSelectedText={{
+                    fontSize: 20,
+                    color: theme.colors.primary,
+                    fontWeight: '700',
+                  }}
+                />
+              </View>
             </View>
           </View>
         </View>

@@ -54,57 +54,59 @@ export default function GenderStep({ value, onNext, onBack }: GenderStepProps) {
         </View>
 
         <View style={onboardingStyles.inputContainer}>
-          {genderOptions.map((option) => (
-            <TouchableOpacity
-              key={option.id}
-              style={[
-                styles.optionCard,
-                {
-                  backgroundColor: selectedGender === option.id
-                    ? theme.colors.primaryContainer
-                    : theme.colors.surface,
-                  borderColor: selectedGender === option.id
-                    ? theme.colors.primary
-                    : theme.custom.colors.border,
-                  borderWidth: selectedGender === option.id ? 1.5 : 1,
-                }
-              ]}
-              onPress={() => setSelectedGender(option.id)}
-              activeOpacity={0.7}
-            >
-              <View style={styles.optionContent}>
-                <MaterialCommunityIcons
-                  name={option.icon}
-                  size={28}
-                  color={selectedGender === option.id ? theme.colors.primary : theme.custom.colors.text.primary}
-                  style={styles.optionIcon}
-                />
-                <Text style={[
-                  styles.optionLabel,
+          <View style={onboardingStyles.inputWrapper}>
+            {genderOptions.map((option) => (
+              <TouchableOpacity
+                key={option.id}
+                style={[
+                  styles.optionCard,
                   {
-                    color: selectedGender === option.id
+                    backgroundColor: selectedGender === option.id
+                      ? theme.colors.primaryContainer
+                      : theme.colors.surface,
+                    borderColor: selectedGender === option.id
                       ? theme.colors.primary
-                      : theme.custom.colors.text.primary,
-                    fontWeight: selectedGender === option.id 
-                      ? theme.custom.typography.weights.bold 
-                      : theme.custom.typography.weights.regular,
-                    fontSize: theme.custom.typography.sizes.bodyLarge,
+                      : theme.custom.colors.border,
+                    borderWidth: selectedGender === option.id ? 1.5 : 1,
                   }
-                ]}>
-                  {option.label}
-                </Text>
-              </View>
-              {selectedGender === option.id && (
-                <View style={styles.selectedIndicator}>
+                ]}
+                onPress={() => setSelectedGender(option.id)}
+                activeOpacity={0.7}
+              >
+                <View style={styles.optionContent}>
                   <MaterialCommunityIcons
-                    name="check-circle"
-                    size={24}
-                    color={theme.colors.primary}
+                    name={option.icon}
+                    size={28}
+                    color={selectedGender === option.id ? theme.colors.primary : theme.custom.colors.text.primary}
+                    style={styles.optionIcon}
                   />
+                  <Text style={[
+                    styles.optionLabel,
+                    {
+                      color: selectedGender === option.id
+                        ? theme.colors.primary
+                        : theme.custom.colors.text.primary,
+                      fontWeight: selectedGender === option.id 
+                        ? theme.custom.typography.weights.bold 
+                        : theme.custom.typography.weights.regular,
+                      fontSize: theme.custom.typography.sizes.bodyLarge,
+                    }
+                  ]}>
+                    {option.label}
+                  </Text>
                 </View>
-              )}
-            </TouchableOpacity>
-          ))}
+                {selectedGender === option.id && (
+                  <View style={styles.selectedIndicator}>
+                    <MaterialCommunityIcons
+                      name="check-circle"
+                      size={24}
+                      color={theme.colors.primary}
+                    />
+                  </View>
+                )}
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
       </View>
 

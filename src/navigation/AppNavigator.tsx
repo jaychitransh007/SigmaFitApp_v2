@@ -8,7 +8,7 @@ import LoginScreen from '../screens/Auth/LoginScreen';
 import OTPVerificationScreen from '../screens/Auth/OTPVerificationScreen';
 import ProfileSetupScreen from '../screens/Onboarding/ProfileSetup';
 import GoalSettingScreen from '../screens/Onboarding/GoalSetting';
-import HomeScreen from '../screens/Home/HomeScreen';
+import MainNavigator from './MainNavigator';
 
 // Navigation types
 export type RootStackParamList = {
@@ -16,7 +16,7 @@ export type RootStackParamList = {
   OTPVerification: { phoneNumber: string };
   ProfileSetup: undefined;
   GoalSetting: undefined;
-  Home: undefined;
+  Main: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -34,7 +34,7 @@ export default function AppNavigator() {
     if (!user) return 'Login';
     if (!user.hasProfile) return 'ProfileSetup';
     if (!user.hasGoals) return 'GoalSetting';
-    return 'Home';
+    return 'Main';
   };
 
   return (
@@ -91,8 +91,8 @@ export default function AppNavigator() {
         />
       ) : (
         <Stack.Screen 
-          name="Home" 
-          component={HomeScreen}
+          name="Main" 
+          component={MainNavigator}
           options={{ headerShown: false }}
         />
       )}

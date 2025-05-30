@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import { useAppTheme } from '../../../../hooks/useAppTheme';
-import NumberScroller from '../../ProfileSetup/components/NumberScroller';
+import WheelPicker from '../../../../components/WheelPicker';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { onboardingStyles } from '../../../../screens/Onboarding/styles';
 
@@ -46,36 +46,61 @@ export default function DesiredWeightStep({ value, onNext, onBack }: DesiredWeig
         </View>
 
         <View style={onboardingStyles.inputContainer}>
-          <NumberScroller
-            value={selectedWeight}
-            onChange={setSelectedWeight}
-            min={30}
-            max={200}
-            unit="kg"
-          />
+          <View style={onboardingStyles.inputWrapper}>
+            <View style={onboardingStyles.pickerWrapper}>
+              <WheelPicker
+                items={Array.from({length: 171}, (_, i) => i + 30)} // 30 to 200 kg
+                selectedIndex={selectedWeight - 30}
+                onSelect={(index: number) => setSelectedWeight(index + 30)}
+                width={200}
+                itemHeight={50}
+                pickerText={{
+                  fontSize: 16,
+                  color: theme.custom.colors.text.secondary,
+                }}
+                pickerSelectedText={{
+                  fontSize: 24,
+                  color: theme.colors.primary,
+                  fontWeight: '700',
+                }}
+              />
+              <Text style={[
+                styles.unitLabel,
+                {
+                  color: theme.colors.primary,
+                  fontSize: theme.custom.typography.sizes.bodyLarge,
+                  fontWeight: theme.custom.typography.weights.bold,
+                }
+              ]}>
+                kg
+              </Text>
+            </View>
+          </View>
         </View>
 
-        <View style={[
-          styles.infoCard, 
-          { 
-            backgroundColor: theme.colors.surfaceVariant, 
-            marginTop: 24,
-          }
-        ]}>
-          <MaterialCommunityIcons
-            name="information-outline"
-            size={24}
-            color={theme.custom.colors.accent.blue}
-          />
-          <Text style={[
-            styles.infoText, 
+
+        <View style={styles.infoCardContainer}>
+          <View style={[
+            styles.infoCard, 
             { 
-              color: theme.custom.colors.text.secondary,
-              fontSize: theme.custom.typography.sizes.bodyMedium,
+              backgroundColor: theme.colors.surfaceVariant,
             }
           ]}>
-            A healthy weight depends on your height, age, and body composition.
-          </Text>
+            <MaterialCommunityIcons
+              name="information-outline"
+              size={24}
+              color={theme.custom.colors.accent.blue}
+            />
+            <Text style={[
+              styles.infoText, 
+              { 
+                color: theme.custom.colors.text.secondary,
+                fontSize: theme.custom.typography.sizes.bodyMedium,
+              }
+            ]}>
+              A healthy weight depends on your height, age, and body composition.
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -103,16 +128,25 @@ export default function DesiredWeightStep({ value, onNext, onBack }: DesiredWeig
 }
 
 const styles = StyleSheet.create({
+  infoCardContainer: {
+    paddingHorizontal: 24,
+    marginBottom: 20,
+    width: '100%',
+  },
   infoCard: {
     flexDirection: 'row',
     padding: 16,
     borderRadius: 12,
-    gap: 12,
     alignItems: 'center',
-    width: '100%',
+    gap: 12,
   },
   infoText: {
     flex: 1,
-    lineHeight: 20,
+  },
+  unitLabel: {
+    position: 'absolute',
+    right: 40,
+    top: '50%',
+    marginTop: -10,
   },
 });

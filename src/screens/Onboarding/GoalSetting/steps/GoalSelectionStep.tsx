@@ -70,52 +70,54 @@ export default function GoalSelectionStep({ value, onNext }: GoalSelectionStepPr
         </View>
 
         <View style={onboardingStyles.inputContainer}>
-          {goals.map((goal) => (
-            <TouchableOpacity
-              key={goal.id}
-              style={[
-                styles.goalCard,
-                {
-                  backgroundColor: theme.colors.surface,
-                  borderColor: selectedGoal === goal.id ? goal.color : theme.custom.colors.border,
-                  borderWidth: selectedGoal === goal.id ? 2 : 1,
-                }
-              ]}
-              onPress={() => setSelectedGoal(goal.id)}
-              activeOpacity={0.8}
-            >
-              <View style={[styles.iconContainer, { backgroundColor: goal.color + '20' }]}>
-                <MaterialCommunityIcons
-                  name={goal.icon}
-                  size={32}
-                  color={goal.color}
-                />
-              </View>
-              <View style={styles.goalTextContainer}>
-                <Text style={[
-                  styles.goalLabel,
+          <View style={onboardingStyles.inputWrapper}>
+            {goals.map((goal) => (
+              <TouchableOpacity
+                key={goal.id}
+                style={[
+                  styles.goalCard,
                   {
-                    color: selectedGoal === goal.id ? goal.color : theme.custom.colors.text.primary,
-                    fontWeight: selectedGoal === goal.id 
-                      ? theme.custom.typography.weights.bold 
-                      : theme.custom.typography.weights.regular,
-                    fontSize: theme.custom.typography.sizes.bodyLarge,
+                    backgroundColor: theme.colors.surface,
+                    borderColor: selectedGoal === goal.id ? goal.color : theme.custom.colors.border,
+                    borderWidth: selectedGoal === goal.id ? 2 : 1,
                   }
-                ]}>
-                  {goal.label}
-                </Text>
-                <Text style={[
-                  styles.goalDescription,
-                  { 
-                    color: theme.custom.colors.text.secondary,
-                    fontSize: theme.custom.typography.sizes.bodySmall,
-                  }
-                ]}>
-                  {goal.description}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+                ]}
+                onPress={() => setSelectedGoal(goal.id)}
+                activeOpacity={0.8}
+              >
+                <View style={[styles.iconContainer, { backgroundColor: goal.color + '20' }]}>
+                  <MaterialCommunityIcons
+                    name={goal.icon}
+                    size={32}
+                    color={goal.color}
+                  />
+                </View>
+                <View style={styles.goalTextContainer}>
+                  <Text style={[
+                    styles.goalLabel,
+                    {
+                      color: selectedGoal === goal.id ? goal.color : theme.custom.colors.text.primary,
+                      fontWeight: selectedGoal === goal.id 
+                        ? theme.custom.typography.weights.bold 
+                        : theme.custom.typography.weights.regular,
+                      fontSize: theme.custom.typography.sizes.bodyLarge,
+                    }
+                  ]}>
+                    {goal.label}
+                  </Text>
+                  <Text style={[
+                    styles.goalDescription,
+                    { 
+                      color: theme.custom.colors.text.secondary,
+                      fontSize: theme.custom.typography.sizes.bodySmall,
+                    }
+                  ]}>
+                    {goal.description}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
       </View>
 
@@ -124,7 +126,7 @@ export default function GoalSelectionStep({ value, onNext }: GoalSelectionStepPr
           mode="contained"
           onPress={handleNext}
           disabled={!selectedGoal}
-          style={[onboardingStyles.button, onboardingStyles.nextButton]}
+          style={[onboardingStyles.button, onboardingStyles.nextButton, { flex: 1 }]}
           contentStyle={onboardingStyles.buttonContent}
           icon="arrow-right"
         >

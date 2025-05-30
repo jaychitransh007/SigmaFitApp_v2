@@ -186,10 +186,12 @@ const styles = StyleSheet.create({
   },
   selectedIndicator: {
     position: 'absolute',
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    borderRadius: 20,
+    left: 4,
+    right: 4,
+    backgroundColor: 'rgba(0, 0, 0, 0.03)',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.05)',
     zIndex: -1,
   },
 });

@@ -35,7 +35,7 @@ export default function HoldingBackStep({ values, onComplete, onBack }: HoldingB
 
   return (
     <View style={onboardingStyles.container}>
-      <ScrollView contentContainerStyle={onboardingStyles.content} showsVerticalScrollIndicator={false}>
+      <View style={onboardingStyles.content}>
         <View style={onboardingStyles.header}>
           <Text style={[
             onboardingStyles.title,
@@ -59,49 +59,54 @@ export default function HoldingBackStep({ values, onComplete, onBack }: HoldingB
         </View>
 
         <View style={onboardingStyles.inputContainer}>
-          {factors.map((factor) => (
-            <TouchableOpacity
-              key={factor.id}
-              style={[
-                styles.factorCard,
-                {
-                  backgroundColor: selectedFactors.includes(factor.id)
-                    ? theme.colors.primaryContainer
-                    : theme.colors.surface,
-                  borderColor: selectedFactors.includes(factor.id)
+          <ScrollView 
+            contentContainerStyle={onboardingStyles.inputWrapper}
+            showsVerticalScrollIndicator={false}
+          >
+            {factors.map((factor) => (
+              <TouchableOpacity
+                key={factor.id}
+                style={[
+                  styles.factorCard,
+                  {
+                    backgroundColor: selectedFactors.includes(factor.id)
+                      ? theme.colors.primaryContainer
+                      : theme.colors.surface,
+                    borderColor: selectedFactors.includes(factor.id)
+                      ? theme.colors.primary
+                      : theme.custom.colors.border,
+                  }
+                ]}
+                onPress={() => toggleFactor(factor.id)}
+                activeOpacity={0.8}
+              >
+                <MaterialCommunityIcons
+                  name={factor.icon}
+                  size={24}
+                  color={selectedFactors.includes(factor.id)
                     ? theme.colors.primary
-                    : theme.custom.colors.border,
-                }
-              ]}
-              onPress={() => toggleFactor(factor.id)}
-              activeOpacity={0.8}
-            >
-              <MaterialCommunityIcons
-                name={factor.icon}
-                size={24}
-                color={selectedFactors.includes(factor.id)
-                  ? theme.colors.primary
-                  : theme.custom.colors.text.secondary}
-                style={styles.factorIcon}
-              />
-              <Text style={[
-                styles.factorLabel,
-                {
-                  color: selectedFactors.includes(factor.id)
-                    ? theme.colors.primary
-                    : theme.custom.colors.text.primary,
-                  fontWeight: selectedFactors.includes(factor.id)
-                    ? theme.custom.typography.weights.bold 
-                    : theme.custom.typography.weights.regular,
-                  fontSize: theme.custom.typography.sizes.bodyLarge,
-                }
-              ]}>
-                {factor.label}
-              </Text>
-            </TouchableOpacity>
-          ))}
+                    : theme.custom.colors.text.secondary}
+                  style={styles.factorIcon}
+                />
+                <Text style={[
+                  styles.factorLabel,
+                  {
+                    color: selectedFactors.includes(factor.id)
+                      ? theme.colors.primary
+                      : theme.custom.colors.text.primary,
+                    fontWeight: selectedFactors.includes(factor.id)
+                      ? theme.custom.typography.weights.bold 
+                      : theme.custom.typography.weights.regular,
+                    fontSize: theme.custom.typography.sizes.bodyLarge,
+                  }
+                ]}>
+                  {factor.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
 
       <View style={onboardingStyles.footer}>
         <Button

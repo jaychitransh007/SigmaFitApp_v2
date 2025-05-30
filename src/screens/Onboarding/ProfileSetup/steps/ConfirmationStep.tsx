@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '../../../../hooks/useAppTheme';
 import { ProfileData } from '../index';
+import { onboardingStyles } from '../../../../screens/Onboarding/styles';
 
 interface ConfirmationStepProps {
   profileData: Partial<ProfileData>;
@@ -15,19 +16,11 @@ export default function ConfirmationStep({ profileData, onComplete, onBack }: Co
   const theme = useAppTheme();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.illustrationContainer}>
-          <MaterialCommunityIcons
-            name="check-circle"
-            size={120}
-            color={theme.colors.primary}
-          />
-        </View>
-
-        <View style={styles.textContainer}>
+    <View style={onboardingStyles.container}>
+      <View style={onboardingStyles.content}>
+        <View style={onboardingStyles.header}>
           <Text style={[
-            styles.title,
+            onboardingStyles.title,
             { 
               color: theme.custom.colors.text.primary,
               fontSize: theme.custom.typography.sizes.headerLarge,
@@ -38,67 +31,76 @@ export default function ConfirmationStep({ profileData, onComplete, onBack }: Co
           </Text>
           
           <Text style={[
-            styles.subtitle,
+            onboardingStyles.subtitle,
             { 
               color: theme.custom.colors.text.secondary,
               fontSize: theme.custom.typography.sizes.bodyLarge,
-              textAlign: 'center'
             }
           ]}>
             Thank you for trusting us with your data, {profileData.name || 'there'}
           </Text>
+        </View>
 
-          <View style={styles.benefitsContainer}>
-            <View style={styles.benefitItem}>
-              <MaterialCommunityIcons
-                name="chart-line"
-                size={24}
-                color={theme.custom.colors.accent.green}
-              />
-              <Text style={[styles.benefitText, { color: theme.custom.colors.text.primary }]}>
-                Track your nutrition progress
-              </Text>
-            </View>
-            
-            <View style={styles.benefitItem}>
-              <MaterialCommunityIcons
-                name="food-apple"
-                size={24}
-                color={theme.custom.colors.accent.orange}
-              />
-              <Text style={[styles.benefitText, { color: theme.custom.colors.text.primary }]}>
-                Get personalized meal suggestions
-              </Text>
-            </View>
-            
-            <View style={styles.benefitItem}>
-              <MaterialCommunityIcons
-                name="target"
-                size={24}
-                color={theme.custom.colors.accent.blue}
-              />
-              <Text style={[styles.benefitText, { color: theme.custom.colors.text.primary }]}>
-                Achieve your health goals
-              </Text>
+        <View style={onboardingStyles.inputContainer}>
+          <View style={styles.illustrationContent}>
+            <MaterialCommunityIcons
+              name="check-circle"
+              size={120}
+              color={theme.colors.primary}
+            />
+
+            <View style={styles.benefitsContainer}>
+              <View style={styles.benefitItem}>
+                <MaterialCommunityIcons
+                  name="chart-line"
+                  size={24}
+                  color={theme.custom.colors.accent.green}
+                />
+                <Text style={[styles.benefitText, { color: theme.custom.colors.text.primary }]}>
+                  Track your nutrition progress
+                </Text>
+              </View>
+              
+              <View style={styles.benefitItem}>
+                <MaterialCommunityIcons
+                  name="food-apple"
+                  size={24}
+                  color={theme.custom.colors.accent.orange}
+                />
+                <Text style={[styles.benefitText, { color: theme.custom.colors.text.primary }]}>
+                  Get personalized meal suggestions
+                </Text>
+              </View>
+              
+              <View style={styles.benefitItem}>
+                <MaterialCommunityIcons
+                  name="target"
+                  size={24}
+                  color={theme.custom.colors.accent.blue}
+                />
+                <Text style={[styles.benefitText, { color: theme.custom.colors.text.primary }]}>
+                  Achieve your health goals
+                </Text>
+              </View>
             </View>
           </View>
         </View>
       </View>
 
-      <View style={styles.footer}>
+      <View style={onboardingStyles.footer}>
         <Button
           mode="outlined"
           onPress={onBack}
-          style={styles.backButton}
-          contentStyle={styles.buttonContent}
+          style={[onboardingStyles.button, onboardingStyles.backButton]}
+          contentStyle={onboardingStyles.buttonContent}
         >
           Back
         </Button>
         <Button
           mode="contained"
           onPress={onComplete}
-          style={styles.getStartedButton}
-          contentStyle={styles.buttonContent}
+          style={[onboardingStyles.button, onboardingStyles.nextButton]}
+          contentStyle={onboardingStyles.buttonContent}
           icon="arrow-right"
         >
           Get Started
@@ -109,30 +111,11 @@ export default function ConfirmationStep({ profileData, onComplete, onBack }: Co
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 24,
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
+  illustrationContent: {
     alignItems: 'center',
-  },
-  illustrationContainer: {
-    marginBottom: 32,
-  },
-  textContainer: {
-    alignItems: 'center',
-    gap: 16,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  subtitle: {
-    paddingHorizontal: 24,
+    gap: 32,
   },
   benefitsContainer: {
-    marginTop: 32,
     gap: 16,
   },
   benefitItem: {
@@ -142,21 +125,5 @@ const styles = StyleSheet.create({
   },
   benefitText: {
     fontSize: 16,
-  },
-  footer: {
-    flexDirection: 'row',
-    gap: 12,
-    paddingBottom: 24,
-  },
-  backButton: {
-    flex: 0.4,
-    borderRadius: 12,
-  },
-  getStartedButton: {
-    flex: 1,
-    borderRadius: 12,
-  },
-  buttonContent: {
-    paddingVertical: 8,
   },
 });

@@ -76,51 +76,53 @@ export default function HeightWeightStep({ height, weight, onNext, onBack }: Hei
         </View>
 
         <View style={onboardingStyles.inputContainer}>
-          <View style={onboardingStyles.rowContainer}>
-            {/* Height Picker */}
-            <View style={onboardingStyles.pickerWrapper}>
-              <Text style={[
-                onboardingStyles.pickerLabel,
-                {
-                  color: theme.custom.colors.text.secondary,
-                  fontSize: theme.custom.typography.sizes.bodyLarge,
-                  fontWeight: theme.custom.typography.weights.regular,
-                }
-              ]}>Height</Text>
-              <WheelPicker
-                items={heights}
-                selectedIndex={Math.max(0, heights.indexOf(selectedHeight))}
-                onSelect={(index) => setSelectedHeight(heights[index])}
-                formatItem={(item) => `${item} cm`}
-                width={120}
-                itemHeight={50}
-                visibleItemCount={3}
-                pickerText={pickerTextStyle}
-                pickerSelectedText={pickerSelectedTextStyle}
-              />
-            </View>
+          <View style={onboardingStyles.inputWrapper}>
+            <View style={onboardingStyles.rowContainer}>
+              {/* Height Picker */}
+              <View style={onboardingStyles.pickerWrapper}>
+                <Text style={[
+                  onboardingStyles.pickerLabel,
+                  {
+                    color: theme.custom.colors.text.secondary,
+                    fontSize: theme.custom.typography.sizes.bodyMedium,
+                    fontWeight: theme.custom.typography.weights.regular,
+                  }
+                ]}>Height</Text>
+                <WheelPicker
+                  items={heights}
+                  selectedIndex={Math.max(0, heights.indexOf(selectedHeight))}
+                  onSelect={(index) => setSelectedHeight(heights[index])}
+                  formatItem={(item) => `${item} cm`}
+                  width={120}
+                  itemHeight={50}
+                  visibleItemCount={3}
+                  pickerText={pickerTextStyle}
+                  pickerSelectedText={pickerSelectedTextStyle}
+                />
+              </View>
 
-            {/* Weight Picker */}
-            <View style={onboardingStyles.pickerWrapper}>
-              <Text style={[
-                onboardingStyles.pickerLabel,
-                {
-                  color: theme.custom.colors.text.secondary,
-                  fontSize: theme.custom.typography.sizes.bodyLarge,
-                  fontWeight: theme.custom.typography.weights.regular,
-                }
-              ]}>Weight</Text>
-              <WheelPicker
-                items={weights}
-                selectedIndex={Math.max(0, weights.indexOf(selectedWeight))}
-                onSelect={(index) => setSelectedWeight(weights[index])}
-                formatItem={(item) => `${item} kg`}
-                width={120}
-                itemHeight={50}
-                visibleItemCount={3}
-                pickerText={pickerTextStyle}
-                pickerSelectedText={pickerSelectedTextStyle}
-              />
+              {/* Weight Picker */}
+              <View style={onboardingStyles.pickerWrapper}>
+                <Text style={[
+                  onboardingStyles.pickerLabel,
+                  {
+                    color: theme.custom.colors.text.secondary,
+                    fontSize: theme.custom.typography.sizes.bodyMedium,
+                    fontWeight: theme.custom.typography.weights.regular,
+                  }
+                ]}>Weight</Text>
+                <WheelPicker
+                  items={weights}
+                  selectedIndex={Math.max(0, weights.indexOf(selectedWeight))}
+                  onSelect={(index) => setSelectedWeight(weights[index])}
+                  formatItem={(item) => `${item} kg`}
+                  width={120}
+                  itemHeight={50}
+                  visibleItemCount={3}
+                  pickerText={pickerTextStyle}
+                  pickerSelectedText={pickerSelectedTextStyle}
+                />
+              </View>
             </View>
           </View>
         </View>
